@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$CONTENT_TITLE | Florent">Florent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .sidebar-active {
+            background-color: #4F46E5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-white shadow-sm w-64 hidden md:block">
+        <div class="h-full flex flex-col">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <img src="https://placeholder.pics/svg/40x40/DEDEDE/555555/LOGO" alt="Logo" class="h-8 w-8">
+                    <span class="ml-3 text-xl font-bold text-indigo-600">Florent</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a th:href="@{/annonces}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'announcements' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-bullhorn w-5 h-5 mr-2"></i>
+                        <span>Annonces</span>
+                    </div>
+                </a>
+                <a th:href="@{/forum}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'forum' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-comments w-5 h-5 mr-2"></i>
+                        <span>Forum</span>
+                    </div>
+                </a>
+                <a th:href="@{/messages}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'messages' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope w-5 h-5 mr-2"></i>
+                        <span>Messagerie</span>
+                    </div>
+                </a>
+            </nav>
+
+            <!-- User info -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User" alt="User">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">User Name</p>
+                        <p class="text-xs text-gray-500">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top Navbar -->
+        <nav th:fragment="navbar" class="bg-white shadow-sm">
+            <div class="max-w-full mx-auto px-6 py-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-4">
+                        <h1 class="text-xl font-bold text-indigo-600" th:text="${pageTitle ?: 'Florent'}">Florent</h1>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button onclick="toggleNotificationModal()" class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="notification-badge bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                                      th:text="${notificationCount ?: '0'}">0</span>
+                            </button>
+                        </div>
+
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 focus:outline-none">
+                                <img class="h-8 w-8 rounded-full object-cover" src="https://ui-avatars.com/api/?name=User" alt="User profile">
+                                <span class="hidden md:block text-gray-700">Mon Profil</span>
+                                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-1 hidden">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mon profil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</a>
+                                <div class="border-t border-gray-100"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Déconnexion</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+            <div class="container mt-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold">Bienvenue sur notre plateforme</h2>
+                </div>
+
+                <!-- Annonces récentes section -->
+                <div class="bg-white rounded-sm border border-neutral-300 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-lg font-medium">Annonces récentes</h4>
+                            <a th:href="@{/annonces}"
+                               class="whitespace-nowrap rounded-sm bg-black border border-black px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75">
+                                Voir toutes les annonces
+                            </a>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="mb-6">
+                            <div class="flex flex-wrap gap-2">
+                                <a th:href="@{/}"
+                                   class="px-3 py-1 rounded-sm border"
+                                   th:classappend="${categorieActuelle == null ? 'bg-indigo-100 border-indigo-500 text-indigo-700' : 'border-neutral-300 hover:bg-gray-50'}">
+                                    Toutes
+                                </a>
+                                <a th:each="cat : ${categories}"
+                                   th:href="@{/(categorie=${cat})}"
+                                   th:text="${cat.displayValue}"
+                                   class="px-3 py-1 rounded-sm border"
+                                   th:classappend="${categorieActuelle == cat ? 'bg-indigo-100 border-indigo-500 text-indigo-700' : 'border-neutral-300 hover:bg-gray-50'}">
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="overflow-hidden w-full overflow-x-auto rounded-sm border border-neutral-300">
+                            <table class="w-full text-left text-sm text-neutral-600">
+                                <thead class="border-b border-neutral-300 bg-neutral-50 text-sm text-neutral-900">
+                                <tr>
+                                    <th scope="col" class="p-4">Titre</th>
+                                    <th scope="col" class="p-4">Catégorie</th>
+                                    <th scope="col" class="p-4">Importance</th>
+                                    <th scope="col" class="p-4">Date</th>
+                                    <th scope="col" class="p-4">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-neutral-300">
+                                <tr th:each="annonce : ${annonces}">
+                                    <td class="p-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-neutral-900" th:text="${annonce.titre}"></span>
+                                            <span class="text-sm text-neutral-600 opacity-85" th:text="${#strings.abbreviate(annonce.contenu, 60)}"></span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <span class="inline-flex rounded-sm px-2 py-1 text-xs font-medium bg-gray-100" th:text="${annonce.categorie.displayValue}"></span>
+                                    </td>
+                                    <td class="p-4">
+                                    <span class="inline-flex overflow-hidden rounded-sm px-2 py-1 text-xs font-medium"
+                                          th:classappend="${
+                                            annonce.importance.name() == 'HAUTE' ? 'border border-red-500 text-red-500 bg-red-500/10' :
+                                            annonce.importance.name() == 'MOYENNE' ? 'border border-yellow-500 text-yellow-500 bg-yellow-500/10' :
+                                            'border border-blue-500 text-blue-500 bg-blue-500/10'
+                                          }"
+                                          th:text="${annonce.importance.displayValue}">
+                                    </span>
+                                    </td>
+                                    <td class="p-4" th:text="${#temporals.format(annonce.dateCreation, 'dd/MM/yyyy')}"></td>
+                                    <td class="p-4">
+                                        <a th:href="@{/annonces/{id}(id=${annonce.id})}"
+                                           class="whitespace-nowrap rounded-sm bg-transparent p-0.5 font-semibold text-black hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2">
+                                            Voir plus
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty state -->
+                        <div class="text-center mt-4 p-4 bg-blue-50 text-blue-700 rounded-sm" th:if="${#lists.isEmpty(annonces)}">
+                            Aucune annonce disponible.
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav th:if="${totalPages > 0}" class="mt-4 flex justify-center">
+                            <ul class="flex space-x-1">
+                                <li th:classappend="${currentPage == 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                                    <a th:href="@{/(page=${currentPage - 1}, categorie=${categorieActuelle})}"
+                                       class="px-3 py-2 rounded-sm border border-neutral-300 hover:bg-gray-50">
+                                        Précédent
+                                    </a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                    th:classappend="${i == currentPage ? 'bg-indigo-100 border-indigo-500' : ''}">
+                                    <a th:href="@{/(page=${i}, categorie=${categorieActuelle})}"
+                                       class="px-3 py-2 rounded-sm border border-neutral-300 hover:bg-gray-50"
+                                       th:text="${i + 1}">
+                                    </a>
+                                </li>
+                                <li th:classappend="${currentPage == totalPages - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                                    <a th:href="@{/(page=${currentPage + 1}, categorie=${categorieActuelle})}"
+                                       class="px-3 py-2 rounded-sm border border-neutral-300 hover:bg-gray-50">
+                                        Suivant
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Notification modal -->
+<div id="notificationModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium">Notifications</h3>
+            <button onclick="closeNotificationModal()" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="notificationList" class="space-y-4 max-h-96 overflow-y-auto">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+  function toggleNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.toggle('hidden');
+  }
+
+  function closeNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.add('hidden');
+  }
+
+  // Toggle profile dropdown
+  const profileDropdown = document.getElementById('profileDropdown');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileDropdown && profileMenu) {
+    profileDropdown.addEventListener('click', function() {
+      profileMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!profileDropdown.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.add('hidden');
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${annonce.titre}"></title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .sidebar-active {
+            background-color: #4F46E5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-white shadow-sm w-64 hidden md:block">
+        <div class="h-full flex flex-col">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <img src="https://placeholder.pics/svg/40x40/DEDEDE/555555/LOGO" alt="Logo" class="h-8 w-8">
+                    <span class="ml-3 text-xl font-bold text-indigo-600">Florent</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a th:href="@{/annonces}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'announcements' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-bullhorn w-5 h-5 mr-2"></i>
+                        <span>Annonces</span>
+                    </div>
+                </a>
+                <a th:href="@{/forum}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'forum' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-comments w-5 h-5 mr-2"></i>
+                        <span>Forum</span>
+                    </div>
+                </a>
+                <a th:href="@{/messages}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'messages' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope w-5 h-5 mr-2"></i>
+                        <span>Messagerie</span>
+                    </div>
+                </a>
+            </nav>
+
+            <!-- User info -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User" alt="User">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">User Name</p>
+                        <p class="text-xs text-gray-500">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div class="container mt-4">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex items-center space-x-2 text-sm">
+                    <li>
+                        <a th:href="@{/annonces}" class="text-indigo-600 hover:text-indigo-700">Annonces</a>
+                    </li>
+                    <li class="text-neutral-500">/</li>
+                    <li class="text-neutral-900" th:text="${annonce.titre}"></li>
+                </ol>
+            </nav>
+
+            <!-- Main content -->
+            <div class="bg-white rounded-sm border border-neutral-300 overflow-hidden">
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex overflow-hidden rounded-sm px-2 py-1 text-xs font-medium"
+                                  th:classappend="${
+                                    annonce.importance.name() == 'HAUTE' ? 'border border-red-500 text-red-500 bg-red-500/10' :
+                                    annonce.importance.name() == 'MOYENNE' ? 'border border-yellow-500 text-yellow-500 bg-yellow-500/10' :
+                                    'border border-blue-500 text-blue-500 bg-blue-500/10'
+                                  }"
+                                  th:text="${annonce.importance.displayValue}">
+                            </span>
+                            <span class="inline-flex rounded-sm px-2 py-1 text-xs font-medium bg-gray-100"
+                                  th:text="${annonce.categorie.displayValue}">
+                            </span>
+                        </div>
+                        <div class="text-sm text-neutral-500">
+                            <span th:text="'Créé le ' + ${#temporals.format(annonce.dateCreation, 'dd/MM/yyyy à HH:mm')}"></span>
+                            <span th:if="${annonce.dateModification != null}"
+                                  th:text="'(Modifié le ' + ${#temporals.format(annonce.dateModification, 'dd/MM/yyyy à HH:mm')} + ')'">
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <h1 class="text-2xl font-bold text-neutral-900 mb-6" th:text="${annonce.titre}"></h1>
+                    <div class="prose prose-neutral max-w-none">
+                        <div th:utext="${#strings.replace(#strings.escapeXml(annonce.contenu), '&#10;', '<br/>')}"></div>
+                    </div>
+
+                    <!-- Attachment -->
+                    <div th:if="${annonce.fichierPath != null}" class="mt-8">
+                        <div class="flex items-center gap-2 p-4 bg-gray-50 rounded-sm border border-neutral-200">
+                            <i class="fas fa-file text-neutral-400"></i>
+                            <span class="text-sm text-neutral-900" th:text="${annonce.fichierPath}"></span>
+                            <a th:href="@{/annonces/files/{filename}(filename=${annonce.fichierPath})}"
+                               class="ml-auto text-sm text-indigo-600 hover:text-indigo-700">
+                                Télécharger
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3 px-6 py-4 bg-gray-50 border-t border-neutral-200">
+                    <a th:href="@{/annonces/{id}/edit(id=${annonce.id})}"
+                       class="whitespace-nowrap rounded-sm bg-black border border-black px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75">
+                        Modifier
+                    </a>
+                    <a th:href="@{/annonces/{id}/delete(id=${annonce.id})}"
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce?')"
+                       class="whitespace-nowrap rounded-sm bg-red-500 border border-red-500 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75">
+                        Supprimer
+                    </a>
+                    <a th:href="@{/annonces}"
+                       class="whitespace-nowrap rounded-sm bg-transparent border border-neutral-300 px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-700 transition hover:bg-gray-50">
+                        Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Notification modal -->
+<div id="notificationModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium">Notifications</h3>
+            <button onclick="closeNotificationModal()" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="notificationList" class="space-y-4 max-h-96 overflow-y-auto">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+  function toggleNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.toggle('hidden');
+  }
+
+  function closeNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.add('hidden');
+  }
+
+  // Toggle profile dropdown
+  const profileDropdown = document.getElementById('profileDropdown');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileDropdown && profileMenu) {
+    profileDropdown.addEventListener('click', function() {
+      profileMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!profileDropdown.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.add('hidden');
+      }
+    });
+  }
+</script>
+</body>
+</html>

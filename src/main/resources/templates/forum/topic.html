@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Discussion - Question sur le cours de mathématiques</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="mb-6">
+            <a th:href="@{/forum}" class="text-indigo-600 hover:text-indigo-800 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Retour au forum
+            </a>
+        </div>
+
+        <!-- Topic Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="flex items-center space-x-3 mb-2">
+                        <h1 class="text-2xl font-bold text-gray-800">Question sur le cours de mathématiques</h1>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">L1</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                        <div class="flex items-center">
+                            <img class="h-6 w-6 rounded-full mr-2" src="https://ui-avatars.com/api/?name=Marie+L" alt="Marie L">
+                            <span>Marie L.</span>
+                        </div>
+                        <span>Posté il y a 2 heures</span>
+                        <span>Vues: 34</span>
+                        <span>Réponses: 8</span>
+                    </div>
+                </div>
+                <div class="space-x-2">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-flag"></i>
+                    </button>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-4 prose max-w-none">
+                <p>Bonjour à tous,</p>
+                <p>J'ai du mal à comprendre le chapitre sur les intégrales, en particulier les théorèmes de convergence. Quelqu'un pourrait-il m'expliquer ou me recommander des ressources supplémentaires ?</p>
+                <p>Merci d'avance pour votre aide !</p>
+                <p>Marie</p>
+            </div>
+            <div class="mt-4 flex items-center space-x-4 text-sm">
+                <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                    <i class="far fa-thumbs-up mr-1"></i>
+                    <span>12 J'aime</span>
+                </button>
+                <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                    <i class="far fa-comment mr-1"></i>
+                    <span>Répondre</span>
+                </button>
+                <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                    <i class="fas fa-share mr-1"></i>
+                    <span>Partager</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Best Answer (if exists) -->
+        <div class="bg-green-50 border border-green-200 rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-green-100 p-2 rounded-full">
+                        <i class="fas fa-check text-green-700"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Meilleure réponse</h3>
+                </div>
+                <div class="text-sm text-gray-500">
+                    Il y a 1 heure
+                </div>
+            </div>
+            <div class="mt-3 flex items-center space-x-4 text-sm">
+                <div class="flex items-center">
+                    <img class="h-8 w-8 rounded-full mr-2" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                    <span class="font-medium">Prof. Martin</span>
+                </div>
+            </div>
+            <div class="mt-4 prose max-w-none">
+                <p>Bonjour Marie,</p>
+                <p>Les théorèmes de convergence sont effectivement complexes à saisir. Je vous conseille de consulter les ressources suivantes :</p>
+                <ul>
+                    <li>Le chapitre 5 du polycopié du cours</li>
+                    <li>Les exercices corrigés disponibles sur l'ENT</li>
+                    <li>La vidéo explicative que j'ai mise à disposition dans la section "Ressources"</li>
+                </ul>
+                <p>Je peux aussi vous proposer une séance de tutorat mercredi après-midi si vous avez encore des difficultés.</p>
+                <p>Cordialement,<br>Pr. Martin</p>
+            </div>
+            <div class="mt-4 flex items-center space-x-4 text-sm">
+                <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                    <i class="far fa-thumbs-up mr-1"></i>
+                    <span>18 J'aime</span>
+                </button>
+                <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                    <i class="far fa-comment mr-1"></i>
+                    <span>Répondre</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Replies -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4">7 autres réponses</h3>
+            <div class="space-y-6">
+                <!-- Reply Item -->
+                <div class="border-b pb-6">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-4 text-sm">
+                            <div class="flex items-center">
+                                <img class="h-8 w-8 rounded-full mr-2" src="https://ui-avatars.com/api/?name=Thomas+D" alt="Thomas D">
+                                <span class="font-medium">Thomas D.</span>
+                            </div>
+                            <span class="text-gray-500">Il y a 1h30</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 prose max-w-none">
+                        <p>J'avais les mêmes difficultés ! J'ai trouvé des exercices supplémentaires sur Khan Academy qui m'ont beaucoup aidé.</p>
+                    </div>
+                    <div class="mt-3 flex items-center space-x-4 text-sm">
+                        <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                            <i class="far fa-thumbs-up mr-1"></i>
+                            <span>5 J'aime</span>
+                        </button>
+                        <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                            <i class="far fa-comment mr-1"></i>
+                            <span>Répondre</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Another Reply -->
+                <div class="border-b pb-6">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-4 text-sm">
+                            <div class="flex items-center">
+                                <img class="h-8 w-8 rounded-full mr-2" src="https://ui-avatars.com/api/?name=Sophie+M" alt="Sophie M">
+                                <span class="font-medium">Sophie M.</span>
+                            </div>
+                            <span class="text-gray-500">Il y a 1h45</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 prose max-w-none">
+                        <p>Si tu veux, on peut organiser une session de révision ensemble ce weekend ? Je pense que plusieurs personnes seraient intéressées.</p>
+                    </div>
+                    <div class="mt-3 flex items-center space-x-4 text-sm">
+                        <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                            <i class="far fa-thumbs-up mr-1"></i>
+                            <span>8 J'aime</span>
+                        </button>
+                        <button class="flex items-center text-gray-500 hover:text-indigo-600">
+                            <i class="far fa-comment mr-1"></i>
+                            <span>Répondre</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Load More Button -->
+                <div class="text-center pt-2">
+                    <button class="text-indigo-600 hover:text-indigo-800">
+                        Voir plus de réponses
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply Form -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-semibold mb-4">Votre réponse</h3>
+            <form>
+                <div class="mb-4">
+                    <textarea rows="5" class="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="Écrivez votre réponse ici..."></textarea>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button type="button" class="text-gray-500 hover:text-indigo-600">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button type="button" class="text-gray-500 hover:text-indigo-600">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <button type="button" class="text-gray-500 hover:text-indigo-600">
+                            <i class="fas fa-link"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm">
+                        Publier la réponse
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Tableau de bord</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1>
+            <div class="text-sm text-gray-500">
+                <span th:text="${#temporals.format(#temporals.createNow(), 'EEEE dd MMMM yyyy', #locale.FRANCE)}">Vendredi 8 juillet 2023</span>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Annonces non lues</p>
+                        <p class="text-2xl font-bold text-gray-800">5</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-bullhorn text-blue-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Messages non lus</p>
+                        <p class="text-2xl font-bold text-gray-800">12</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-envelope text-green-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Discussions actives</p>
+                        <p class="text-2xl font-bold text-gray-800">8</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-comments text-purple-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Fichiers partagés</p>
+                        <p class="text-2xl font-bold text-gray-800">24</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-file text-yellow-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Announcements & Activity -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Recent Announcements -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Annonces récentes</h2>
+                        <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800">Voir tout</a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="border-b pb-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-medium">Mise à jour du planning des examens</h3>
+                                <span class="text-xs text-gray-500">Il y a 2h</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-600">Le planning des examens a été mis à jour. Veuillez consulter les nouvelles dates.</p>
+                            <div class="mt-2">
+                                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Scolarité</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-b pb-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-medium">Conférence sur l'Intelligence Artificielle</h3>
+                                <span class="text-xs text-gray-500">Hier</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-600">Une conférence sur l'IA aura lieu le 15 juin à 14h dans l'amphi A.</p>
+                            <div class="mt-2">
+                                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Événement</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-medium">Fermeture de la bibliothèque</h3>
+                                <span class="text-xs text-gray-500">02/06/2023</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-600">La bibliothèque sera fermée pour maintenance du 10 au 12 juin.</p>
+                            <div class="mt-2">
+                                <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Important</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Activité récente</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Marie+L" alt="Marie L">
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">Marie L.</span> a posté dans
+                                    <span class="font-medium text-indigo-600">Forum Mathématiques</span>
+                                </p>
+                                <p class="text-xs text-gray-500">Il y a 20 minutes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Thomas+D" alt="Thomas D">
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">Thomas D.</span> a partagé un document:
+                                    <span class="font-medium text-indigo-600">Cours de Physique S4.pdf</span>
+                                </p>
+                                <p class="text-xs text-gray-500">Il y a 1 heure</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">Prof. Martin</span> a créé une nouvelle annonce:
+                                    <span class="font-medium text-indigo-600">Informations TD de lundi</span>
+                                </p>
+                                <p class="text-xs text-gray-500">Il y a 3 heures</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Admin" alt="Admin">
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">Administration</span> a mis à jour le
+                                    <span class="font-medium text-indigo-600">calendrier des examens</span>
+                                </p>
+                                <p class="text-xs text-gray-500">Il y a 5 heures</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

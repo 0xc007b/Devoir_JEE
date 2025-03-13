@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <aside th:fragment="sidebar" class="bg-white shadow-sm w-64 hidden md:block">
+        <div class="h-full flex flex-col">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <img src="https://placeholder.pics/svg/40x40/DEDEDE/555555/LOGO" alt="Logo" class="h-8 w-8">
+                    <span class="ml-3 text-xl font-bold text-indigo-600">Florent</span>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a th:href="@{/dashboard}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'dashboard' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-home w-5 h-5 mr-2"></i>
+                        <span>Tableau de bord</span>
+                    </div>
+                </a>
+                <a th:href="@{/announcements}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'announcements' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-bullhorn w-5 h-5 mr-2"></i>
+                        <span>Annonces</span>
+                    </div>
+                </a>
+                <a th:href="@{/forum}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'forum' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-comments w-5 h-5 mr-2"></i>
+                        <span>Forum</span>
+                    </div>
+                </a>
+                <a th:href="@{/messages}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'messages' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope w-5 h-5 mr-2"></i>
+                        <span>Messagerie</span>
+                    </div>
+                </a>
+                <a th:href="@{/documents}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'documents' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-file w-5 h-5 mr-2"></i>
+                        <span>Documents</span>
+                    </div>
+                </a>
+            </nav>
+            
+            <!-- User info -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User" alt="User">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">User Name</p>
+                        <p class="text-xs text-gray-500">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</body>
+</html>

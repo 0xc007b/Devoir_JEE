@@ -1,10 +1,355 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Messagerie</title>
 </head>
 <body>
+    <div layout:fragment="content">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Messagerie</h1>
+            <button id="newMessageBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md shadow-sm flex items-center">
+                <i class="fas fa-pen mr-2"></i>
+                Nouveau message
+            </button>
+        </div>
 
+        <!-- Main Content -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="flex h-[600px]">
+                <!-- Contacts Sidebar -->
+                <div class="w-1/3 border-r border-gray-200 overflow-y-auto">
+                    <!-- Search -->
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="relative">
+                            <input type="text" placeholder="Rechercher..." 
+                                   class="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Conversation List -->
+                    <div>
+                        <!-- Active conversation -->
+                        <div class="p-4 border-b border-gray-200 bg-indigo-50 hover:bg-indigo-100 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Prof. Martin</p>
+                                        <p class="text-xs text-gray-500 truncate w-40">Bonjour, concernant votre question sur...</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-indigo-600 font-semibold">14:32</div>
+                                    <div class="mt-1 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Other conversations -->
+                        <div class="p-4 border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Thomas+D" alt="Thomas D">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Thomas D.</p>
+                                        <p class="text-xs text-gray-500 truncate w-40">Tu as commencé à travailler sur le projet ?</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">Hier</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Sophie+M" alt="Sophie M">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Sophie M.</p>
+                                        <p class="text-xs text-gray-500 truncate w-40">Merci pour ton aide avec les exercices !</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">20/06</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Julie+P" alt="Julie P">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Julie P.</p>
+                                        <p class="text-xs text-gray-500 truncate w-40">On se retrouve à 14h à la bibliothèque ?</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">18/06</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Admin" alt="Admin">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Administration</p>
+                                        <p class="text-xs text-gray-500 truncate w-40">Information concernant votre inscription</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">15/06</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conversation -->
+                <div class="w-2/3 flex flex-col">
+                    <!-- Header -->
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Prof. Martin</p>
+                                <p class="text-xs text-gray-500">En ligne</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-video"></i>
+                            </button>
+                            <button class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages -->
+                    <div class="flex-1 p-4 overflow-y-auto" id="messages-container">
+                        <!-- Date separator -->
+                        <div class="flex justify-center my-4">
+                            <div class="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">
+                                Aujourd'hui
+                            </div>
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex mb-4">
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-2">
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">Bonjour, concernant votre question sur les intégrales de surface, j'ai préparé quelques exercices supplémentaires qui pourraient vous être utiles.</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">10:15</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex mb-4">
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-2">
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">Je vous les envoie en pièce jointe.</p>
+                                </div>
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 mt-1 max-w-xs">
+                                    <div class="flex items-center">
+                                        <i class="far fa-file-pdf text-red-500 text-lg mr-2"></i>
+                                        <div>
+                                            <p class="text-sm font-medium">Exercices_integrales.pdf</p>
+                                            <p class="text-xs text-gray-500">2.4 MB</p>
+                                        </div>
+                                        <button class="ml-2 text-indigo-600 hover:text-indigo-800">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">10:16</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sent message -->
+                        <div class="flex justify-end mb-4">
+                            <div class="mr-2 text-right">
+                                <div class="bg-indigo-600 text-white rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">Merci beaucoup professeur ! J'ai justement bloqué sur les exercices 3 et 4 du TD.</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">10:30</p>
+                            </div>
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=User" alt="You">
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex mb-4">
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-2">
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">Passez à mon bureau demain à 14h si vous avez besoin d'aide. Je pourrai vous expliquer ces exercices en détail.</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">10:35</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Received messages (recent) -->
+                        <div class="flex mb-4">
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-2">
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">J'ai également ajouté quelques ressources supplémentaires sur l'ENT.</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">14:30</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex mb-4">
+                            <img class="h-8 w-8 rounded-full mt-1" src="https://ui-avatars.com/api/?name=Prof+Martin" alt="Prof Martin">
+                            <div class="ml-2">
+                                <div class="bg-gray-100 rounded-lg py-2 px-4 max-w-xs">
+                                    <p class="text-sm">N'hésitez pas si vous avez d'autres questions.</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">14:32</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Input -->
+                    <div class="p-4 border-t border-gray-200">
+                        <form class="flex items-end">
+                            <div class="flex-1 mr-4">
+                                <div class="relative">
+                                    <textarea rows="1" placeholder="Écrivez votre message..." 
+                                           class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 resize-none"></textarea>
+                                    <div class="absolute bottom-2 right-2 flex space-x-2">
+                                        <button type="button" class="text-gray-400 hover:text-indigo-600">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
+                                        <button type="button" class="text-gray-400 hover:text-indigo-600">
+                                            <i class="far fa-smile"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-full h-10 w-10 flex items-center justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Message Modal -->
+        <div id="newMessageModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-medium">Nouveau message</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form>
+                    <div class="mb-4">
+                        <label for="recipients" class="block text-sm font-medium text-gray-700 mb-1">Destinataire(s)</label>
+                        <input type="text" id="recipients" placeholder="Rechercher des utilisateurs..." 
+                               class="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <div id="recipientSuggestions" class="bg-white border border-gray-200 rounded-md mt-1 shadow-sm">
+                            <!-- Suggestions will appear here -->
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
+                        <input type="text" id="subject" 
+                               class="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <textarea id="message" rows="5" 
+                                  class="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pièces jointes</label>
+                        <div class="flex items-center justify-center border-2 border-gray-300 border-dashed rounded-md p-4">
+                            <div class="space-y-1 text-center">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl"></i>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                        <span>Télécharger un fichier</span>
+                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" multiple>
+                                    </label>
+                                    <p class="pl-1">ou glisser-déposer</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG, PDF, DOCX jusqu'à 10MB
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="cancelSend" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Annuler
+                        </button>
+                        <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                            Envoyer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Modal functionality
+        const newMessageBtn = document.getElementById('newMessageBtn');
+        const newMessageModal = document.getElementById('newMessageModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelSend = document.getElementById('cancelSend');
+        
+        if(newMessageBtn && newMessageModal && closeModal && cancelSend) {
+            newMessageBtn.addEventListener('click', function() {
+                newMessageModal.classList.remove('hidden');
+            });
+            
+            closeModal.addEventListener('click', function() {
+                newMessageModal.classList.add('hidden');
+            });
+            
+            cancelSend.addEventListener('click', function() {
+                newMessageModal.classList.add('hidden');
+            });
+            
+            // Close when clicking outside the modal
+            window.addEventListener('click', function(event) {
+                if (event.target === newMessageModal) {
+                    newMessageModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Auto-resize textarea
+        const messageTextarea = document.querySelector('textarea');
+        if(messageTextarea) {
+            messageTextarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        }
+        
+        // Scroll to bottom of messages
+        const messagesContainer = document.getElementById('messages-container');
+        if(messagesContainer) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${annonce.id == null ? 'Nouvelle Annonce' : 'Modifier Annonce'}"></title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .sidebar-active {
+            background-color: #4F46E5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-white shadow-sm w-64 hidden md:block">
+        <div class="h-full flex flex-col">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <img src="https://placeholder.pics/svg/40x40/DEDEDE/555555/LOGO" alt="Logo" class="h-8 w-8">
+                    <span class="ml-3 text-xl font-bold text-indigo-600">Florent</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a th:href="@{/annonces}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'announcements' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-bullhorn w-5 h-5 mr-2"></i>
+                        <span>Annonces</span>
+                    </div>
+                </a>
+                <a th:href="@{/forum}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'forum' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-comments w-5 h-5 mr-2"></i>
+                        <span>Forum</span>
+                    </div>
+                </a>
+                <a th:href="@{/messages}"
+                   class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-100 hover:text-indigo-700"
+                   th:classappend="${currentPage == 'messages' ? 'sidebar-active' : ''}">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope w-5 h-5 mr-2"></i>
+                        <span>Messagerie</span>
+                    </div>
+                </a>
+            </nav>
+
+            <!-- User info -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center">
+                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User" alt="User">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">User Name</p>
+                        <p class="text-xs text-gray-500">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top Navbar -->
+        <nav th:fragment="navbar" class="bg-white shadow-sm">
+            <div class="max-w-full mx-auto px-6 py-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-4">
+                        <h1 class="text-xl font-bold text-indigo-600" th:text="${pageTitle ?: 'Florent'}">Florent</h1>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button onclick="toggleNotificationModal()" class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="notification-badge bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                                      th:text="${notificationCount ?: '0'}">0</span>
+                            </button>
+                        </div>
+
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 focus:outline-none">
+                                <img class="h-8 w-8 rounded-full object-cover" src="https://ui-avatars.com/api/?name=User" alt="User profile">
+                                <span class="hidden md:block text-gray-700">Mon Profil</span>
+                                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-1 hidden">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mon profil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</a>
+                                <div class="border-t border-gray-100"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Déconnexion</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <!-- ...existing code... -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+            <div class="container mt-4">
+                <!-- Breadcrumb -->
+                <nav class="mb-6">
+                    <ol class="flex items-center space-x-2 text-sm">
+                        <li>
+                            <a th:href="@{/annonces}" class="text-indigo-600 hover:text-indigo-700">Annonces</a>
+                        </li>
+                        <li class="text-neutral-500">/</li>
+                        <li class="text-neutral-900" th:text="${annonce.id == null ? 'Nouvelle Annonce' : 'Modifier Annonce'}"></li>
+                    </ol>
+                </nav>
+
+                <!-- Form Card -->
+                <div class="bg-white rounded-sm border border-neutral-300 overflow-hidden">
+                    <div class="p-6">
+                        <form th:action="@{/annonces}" th:object="${annonce}" method="post" enctype="multipart/form-data" class="space-y-6">
+                            <input type="hidden" th:field="*{id}">
+
+                            <!-- Titre -->
+                            <div class="flex w-full flex-col gap-1 text-neutral-600">
+                                <label for="titre" class="w-fit pl-0.5 text-sm">Titre</label>
+                                <input type="text" id="titre" th:field="*{titre}" required
+                                       class="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                       placeholder="Titre de l'annonce"/>
+                                <small class="text-red-500" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></small>
+                            </div>
+
+                            <!-- Catégorie -->
+                            <div class="flex w-full flex-col gap-1 text-neutral-600">
+                                <label for="categorie" class="w-fit pl-0.5 text-sm">Catégorie</label>
+                                <select id="categorie" th:field="*{categorie}" required
+                                        class="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+                                    <option value="">-- Sélectionner une catégorie --</option>
+                                    <option th:each="cat : ${T(com.azonnoudo.florent.models.CategorieAnnonce).values()}"
+                                            th:value="${cat}" th:text="${cat.displayValue}"></option>
+                                </select>
+                                <small class="text-red-500" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></small>
+                            </div>
+
+                            <!-- Importance -->
+                            <div class="flex w-full flex-col gap-1 text-neutral-600">
+                                <label for="importance" class="w-fit pl-0.5 text-sm">Importance</label>
+                                <select id="importance" th:field="*{importance}" required
+                                        class="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+                                    <option value="">-- Sélectionner un niveau d'importance --</option>
+                                    <option th:each="imp : ${T(com.azonnoudo.florent.models.ImportanceAnnonce).values()}"
+                                            th:value="${imp}" th:text="${imp.displayValue}"></option>
+                                </select>
+                                <small class="text-red-500" th:if="${#fields.hasErrors('importance')}" th:errors="*{importance}"></small>
+                            </div>
+
+                            <!-- Contenu -->
+                            <div class="flex w-full flex-col gap-1 text-neutral-600">
+                                <label for="contenu" class="w-fit pl-0.5 text-sm">Contenu</label>
+                                <textarea id="contenu" th:field="*{contenu}" rows="5" required
+                                          class="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-2.5 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                          placeholder="Contenu de l'annonce..."></textarea>
+                                <small class="text-red-500" th:if="${#fields.hasErrors('contenu')}" th:errors="*{contenu}"></small>
+                            </div>
+
+                            <!-- File Upload -->
+                            <div class="relative flex w-full flex-col gap-1 text-neutral-600">
+                                <label for="file" class="w-fit pl-0.5 text-sm">Fichier (optionnel)</label>
+                                <input type="file" id="file" name="file"
+                                       class="w-full max-w-md overflow-clip rounded-radius border border-neutral-300 bg-neutral-50/50 text-sm file:mr-4 file:border-none file:bg-neutral-50 file:px-4 file:py-2 file:font-medium file:text-neutral-900"/>
+                                <small class="pl-0.5">PDF, DOCX, XLSX - Max 10MB</small>
+
+                                <div th:if="${annonce.fichierPath != null}" class="mt-2 text-sm">
+                                    <p>Fichier actuel:
+                                        <a th:href="@{/annonces/files/{filename}(filename=${annonce.fichierPath})}"
+                                           class="text-indigo-600 hover:text-indigo-700"
+                                           th:text="${annonce.fichierPath}"></a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex items-center gap-3 pt-4">
+                                <button type="submit"
+                                        class="whitespace-nowrap rounded-sm bg-black border border-black px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75">
+                                    Enregistrer
+                                </button>
+                                <a th:href="@{/annonces}"
+                                   class="whitespace-nowrap rounded-sm bg-transparent border border-neutral-300 px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-700 transition hover:bg-gray-50">
+                                    Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- ...existing code... -->
+    </div>
+</div>
+
+<!-- Notification modal -->
+<div id="notificationModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium">Notifications</h3>
+            <button onclick="closeNotificationModal()" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="notificationList" class="space-y-4 max-h-96 overflow-y-auto">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+  function toggleNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.toggle('hidden');
+  }
+
+  function closeNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    modal.classList.add('hidden');
+  }
+
+  // Toggle profile dropdown
+  const profileDropdown = document.getElementById('profileDropdown');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileDropdown && profileMenu) {
+    profileDropdown.addEventListener('click', function() {
+      profileMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!profileDropdown.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.add('hidden');
+      }
+    });
+  }
+</script>
+</body>
+</html>
